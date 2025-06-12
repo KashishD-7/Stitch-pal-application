@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Vendor Shop</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: rgba(49, 105, 145, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .form-container {
+            background: white;
+            padding: 20px;
+            width: 80%;
+            max-width: 600px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        input:focus, textarea:focus {
+            border-color: rgba(49, 105, 145, 0.9);
+            outline: none;
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .icon {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        button {
+            padding: 10px;
+            color: white;
+            border: none;
+            width: 100%;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .add-btn { background-color: rgba(49, 105, 145, 0.9); }
+        .edit-btn { background-color: #ffc107; }
+        .update-btn { background-color: #007bff; }
+        .delete-btn { background-color: #dc3545; }
+
+        button:hover {
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2><i class="fas fa-store"></i> Register Vendor Shop</h2>
+        <form id="shopForm" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label for="shop_name">Shop Name:</label>
+            <div class="input-group">
+                <input type="text" id="shop_name" name="shop_name" value="{{ shop.shop_name }}" required>
+                <i class="fas fa-store icon"></i>
+            </div>
+
+            <label for="address">Address:</label>
+            <div class="input-group">
+                <input type="text" id="address" name="address" value="{{ shop.address }}" required>
+                <i class="fas fa-map-marker-alt icon"></i>
+            </div>
+
+            <label for="location">Location:</label>
+            <input type="text" id="location" name="location" value="{{ shop.location }}">
+
+            <label for="business_hours">Business Hours:</label>
+            <textarea id="business_hours" name="business_hours" required placeholder="Mon-Fri: 9AM-6PM, Sat-Sun: 10AM-4PM">{{ shop.business_hours }}</textarea>
+
+            <label for="shop_photo">Shop Photo:</label>
+            <input type="file" name="shop_photo">
+    {% if shop.image %}
+        <img src="{{ shop.image.url }}" alt="Shop Photo" width="100">
+    {% endif %}
+
+
+            <div class="button-group">
+                <button type="submit" class="add-btn">Add Shop</button>
+            
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function enableEdit() {
+            document.querySelectorAll("input, textarea").forEach(field => {
+                field.removeAttribute("readonly");
+            });
+            document.getElementById("shop_photo").removeAttribute("disabled");
+        }
+    </script>
+</body>
+</html>

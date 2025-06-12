@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Measurements</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: rgba(49, 105, 145, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            flex-direction: column;
+        }
+        .form-container {
+            background: white;
+            padding: 20px;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h2 { text-align: center; color: #333; }
+        label { font-weight: bold; display: block; margin-top: 10px; }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .btn-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+        button {
+            padding: 10px;
+            border: none;
+            width: 48%;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        .add-btn { background-color: #218838; color: white; }
+        .edit-btn { background-color: #007bff; color: white; }
+        .update-btn { background-color: #ffc107; color: black; }
+        .delete-btn { background-color: #dc3545; color: white; }
+        button:hover { opacity: 0.8; }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2><i class="fas fa-ruler"></i> Manage Measurements</h2>
+        <form id="measurementForm" method="POST">
+            {% csrf_token %}
+            <input type="hidden" id="measurement_id" name="measurement_id">
+
+            <label for="customer_id">Customer ID:</label>
+            <input type="number" id="customer_id" name="customer_id">
+
+            <label for="chest">Chest (inches):</label>
+            <input type="number" id="chest" name="chest" step="0.1">
+
+            <label for="waist">Waist (inches):</label>
+            <input type="number" id="waist" name="waist" step="0.1">
+
+            <label for="inseam">Inseam (inches):</label>
+            <input type="number" id="inseam" name="inseam" step="0.1">
+
+            <label for="shoulders">Shoulders (inches):</label>
+            <input type="number" id="shoulders" name="shoulders" step="0.1">
+
+            <label for="sleeve_length">Sleeve Length (inches):</label>
+            <input type="number" id="sleeve_length" name="sleeve_length" step="0.1">
+
+            <div class="btn-group">
+                <button type="submit" class="add-btn">Add</button>
+                <button type="button" class="edit-btn" onclick="editMeasurement()">Edit</button>
+                <button type="button" class="update-btn" onclick="updateMeasurement()">Update</button>
+                <button type="button" class="delete-btn" onclick="deleteMeasurement()">Delete</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function addMeasurement() {
+            document.getElementById("measurementForm").action = "add_measurement.php";
+            document.getElementById("measurementForm").submit();
+        }
+
+        function editMeasurement() {
+            let measurementId = prompt("Enter Measurement ID to Edit:");
+            if (measurementId) {
+                document.getElementById("measurement_id").value = measurementId;
+                document.querySelector(".update-btn").style.display = "inline-block";
+                document.querySelector(".edit-btn").style.display = "none";
+            }
+        }
+
+        function updateMeasurement() {
+            document.getElementById("measurementForm").action = "update_measurement.php";
+            document.getElementById("measurementForm").submit();
+        }
+
+        function deleteMeasurement() {
+            let confirmDelete = confirm("Are you sure you want to delete this measurement?");
+            if (confirmDelete) {
+                document.getElementById("measurementForm").action = "delete_measurement.php";
+                document.getElementById("measurementForm").submit();
+            }
+        }
+    </script>
+</body>
+</html>

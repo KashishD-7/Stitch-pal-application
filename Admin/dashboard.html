@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"> <!-- Font Awesome for icons -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color:rgba(49, 105, 145, 0.9); /* Light background */
+        }
+
+        .dashboard-container {
+            display: flex;
+            height: 100vh; /* Full viewport height */
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color:rgba(194, 201, 232, 0.9); /* Sidebar color */
+            color: rgba(0, 0, 0, 0.9);;
+            padding-top: 20px;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1); /* Shadow effect */
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .menu {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .menu li {
+            margin-bottom: 15px;
+        }
+
+        .menu li a {
+            text-decoration: none;
+            color: rgba(0, 0, 0, 0.9);;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            border-radius: 5px; /* Rounded corners */
+            transition: background-color 0.3s ease; /* Smooth hover effect */
+        }
+
+        .menu li a:hover {
+            background-color:rgba(194, 201, 232, 0.9); /* Darker blue on hover */
+        }
+
+        .menu li a i {
+            margin-right: 10px; /* Space between icon and text */
+        }
+
+        .content {
+            flex-grow: 1;
+            padding: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .header h2 {
+            color: #333; /* Dark text color */
+        }
+
+        .header a {
+            text-decoration: none;
+            background-color:rgba(194, 201, 232, 0.9); /* Button color */
+            color: rgba(0, 0, 0, 0.9);;
+            padding: 10px 15px;
+            border-radius: 5px; /* Rounded corners */
+            transition: background-color 0.3s ease; /* Smooth hover effect */
+        }
+
+        .header a:hover {
+            background-color:rgba(194, 201, 232, 0.9); /* Darker blue on hover */
+        }
+        /* Card Styles */
+        .card-container {
+            display: flex;
+            gap: 20px; /* Space between cards */
+            flex-wrap: wrap; /* Wrap cards to the next row if necessary */
+        }
+
+        .card {
+            background-color: rgba(194, 201, 232, 0.9); /* White card background */
+            border-radius: 10px; /* Rounded corners for cards */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+            padding: 20px;
+            width: calc(20% - 20px); /* Four cards per row with spacing */
+            text-align: center;
+        }
+
+        .card i {
+            font-size: 40px; /* Large icon size */
+            color:rgb(9, 10, 10); /* Icon color matching the theme */
+        }
+
+        .card p {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #6c757d; /* Muted text color */
+        }
+
+        .card button {
+            margin-top: 15px;
+            padding: 10px 15px;
+            background-color:rgb(0, 0, 0); /* Button color matching the theme */
+            color: white;
+            border-radius: 5px; /* Rounded corners for buttons */
+            border: none; /* Remove default border */
+            cursor: pointer; /* Pointer cursor on hover */
+            transition: background-color 0.3s ease; /* Smooth hover effect */
+        }
+        .card button:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <h2>Admin Panel</h2>
+            <ul class="menu">
+                <li><a href="/home"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="{% url 'show_user' %}"><i class="fas fa-user"></i> User</a></li>
+                <li><a href="{% url 'show_orders' %}"><i class="fas fa-shopping-cart"></i> Orders</a></li>
+                <li><a href="{% url 'show_measurements' %}"><i class="fas fa-box"></i> Products</a></li>
+                <li><a href="{% url 'show_tailor_shops' %}"><i class="fas fa-user-tie"></i> Tailor Details</a></li>
+                <li><a href="{% url 'show_vendor_shops' %}"><i class="fas fa-users"></i> Vendor Details</a></li>
+                <li><a href="{% url 'show_order_customizations' %}"><i class="fas fa-shopping-cart"></i> Customise Orders</a></li>
+                <li><a href="/home"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="content">
+            <!-- Header -->
+            <div class="header">
+                <h2>Welcome to the Dashboard</h2>
+                <a href="/login">Logout</a>
+            </div>
+
+            <!-- Main Content Section -->
+            <p>You are logged in as Admin.</p>
+            
+            <!-- Example Dashboard Content -->
+            <p>Here you can manage orders, products, tailor details, vendor details, and more.</p>
+
+            <!-- Cards Section -->
+            <div class="card-container">
+                <!-- User Card-->
+                <div class="card">
+                    <i class="fas fa-user"></i>
+                    <h3>users</h3>
+                    <p>Manage all your users efficiently.</p>
+                    <a href="{% url 'show_user' %}">
+                        <button>View Users</button>
+                    </a>
+                </div>
+
+                <!-- Orders Card -->
+                <div class="card">
+                    <i class="fas fa-shopping-cart"></i>
+                    <h3>Orders</h3>
+                    <p>Manage all your orders efficiently.</p>
+                    <a href="{% url 'show_orders' %}">
+                    <button>View Orders</button>
+                    </a>
+                </div>
+
+                <!-- Products Card -->
+                <div class="card">
+                    <i class="fas fa-box"></i>
+                    <h3>measurements</h3>
+                    <p>Keep measurements.</p>
+                    <a href="{% url 'show_measurements' %}">
+                    <button>Manage Inventory</button>
+                    </a>
+                </div>
+
+                <!-- Tailor Profile Card -->
+                <div class="card">
+                    <i class="fas fa-user-tie"></i>
+                    <h3>Tailor Profile</h3>
+                    <p>Manage tailor profiles.</p>
+                    <a href="{% url 'show_tailor_shops' %}">
+                    <button>Manage Tailor Profile</button>
+                    </a>
+                </div>
+
+                <!-- Vendor Profile Card -->
+                <div class="card">
+                    <i class="fas fa-users"></i>
+                    <h3>Vendor Profile</h3>
+                    <p>Manage vendor profiles.</p>
+                    <a href="{% url 'show_vendor_shops' %}">
+                    <button>Manage Vendor Profile</button>
+                    </a>
+                </div>
+
+                <!-- Orders Card -->
+                <div class="card">
+                    <i class="fas fa-shopping-cart"></i>
+                    <h3>Orders Customise</h3>
+                    <p>Manage all your Customise orders efficiently.</p>
+                    <a href="{% url 'show_order_customizations' %}">
+                    <button>View Customise Orders</button>
+                    </a>
+                </div>
+
+
+                <div class="card">
+                    <i class="fas fa-shopping-cart"></i>
+                    <h3>Appointments</h3>
+                    <p>Manage all your Appointments efficiently.</p>
+                    <a href="{% url 'show_appointments' %}">
+                    <button>View Appointments</button>
+                    </a>
+                </div>
+        </div>
+    </div>
+</body>
+</html>
+

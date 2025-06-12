@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Orders</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: rgba(49, 105, 145, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            flex-direction: column;
+        }
+
+        .form-container {
+            background: white;
+            padding: 20px;
+            width: 80%;
+            max-width: 600px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: rgba(49, 105, 145, 0.9);
+            outline: none;
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .icon {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+
+        button {
+            padding: 10px;
+            border: none;
+            width: 48%;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .add-btn { background-color: #218838; color: white; }
+        .edit-btn { background-color: #007bff; color: white; }
+        .update-btn { background-color: #ffc107; color: black; display: none; }
+        .delete-btn { background-color: #dc3545; color: white; }
+
+        button:hover {
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="form-container">
+        <h2><i class="fas fa-receipt"></i> Manage Orders</h2>
+        <form id="orderForm" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="hidden" id="order_id" name="order_id">
+
+            <label for="customer_name">Customer Name:</label>
+            <input type="text" id="customer_name" name="customer_name" value="{{ order.customer_name }}" required>
+
+            <label for="contact_number">Contact Number:</label>
+            <input type="tel" id="contact_number" name="contact_number" value="{{ order.contact_number }}" required>
+
+            <label for="clothing_types">Clothing Types:</label>
+            <select id="clothing_types" name="clothing_types[]" multiple required>
+                <option value="Shirt">Shirt</option>
+                <option value="Pant">Pant</option>
+                <option value="Suit">Suit</option>
+                <option value="Kurta">Kurta</option>
+                <option value="Blouse">Blouse</option>
+                <option value="Dress">Dress</option>
+            </select>
+
+            <label for="order_photo">Upload Order Photo:</label>
+            <input type="file" id="order_photo" name="order_photo">
+            {% if order.order_photo %}
+        <img src="{{ order.order_photo.url }}" alt="order Photo" width="100">
+    {% endif %}
+
+            <label for="additional_instructions">Additional Instructions:</label>
+            <textarea id="additional_instructions" name="additional_instructions">{{order.additional_instructions}}</textarea>
+
+            <label for="price">Price (in USD):</label>
+            <input type="number" id="price" name="price" step="0.01" value="{{ order.price }}" required>
+
+            <label for="status">Order Status:</label>
+            <select id="status" name="status">
+                <option value="Pending" {% if order.status == "Pending" %}selected{% endif %}>Pending</option>
+                <option value="In Progress"{% if order.status == "In Progress" %}selected{% endif %}>In Progress</option>
+                <option value="Completed" {% if order.status == "Completed" %}selected{% endif %}>Completed</option>
+                <option value="Canceled" {% if order.status == "Canceled" %}selected{% endif %}>Canceled</option>
+            </select>
+
+            <div class="btn-group">
+                <button type="submit" class="add-btn">Save</button>
+            
+            </div>
+         </form>
+    </div>
+
+    <script>
+        function addOrder() {
+            document.getElementById("orderForm").action = "add_order.php";
+            document.getElementById("orderForm").submit();
+        }
+
+        function editOrder() {
+            let orderId = prompt("Enter Order ID to Edit:");
+            if (orderId) {
+                // Fetch order details from database (backend required)
+                document.getElementById("order_id").value = orderId;
+                document.querySelector(".update-btn").style.display = "inline-block";
+                document.querySelector(".edit-btn").style.display = "none";
+            }
+        }
+
+        function updateOrder() {
+            document.getElementById("orderForm").action = "update_order.php";
+            document.getElementById("orderForm").submit();
+        }
+
+        function deleteOrder() {
+            let orderId = document.getElementById("order_id").value;
+            if (orderId) {
+                let confirmDelete = confirm("Are you sure you want to delete this order?");
+                if (confirmDelete) {
+                    document.getElementById("orderForm").action = "delete_order.php";
+                    document.getElementById("orderForm").submit();
+                }
+            } else {
+                alert("Please enter an Order ID to delete.");
+            }
+        }
+    </script>
+
+</body>
+</html>
